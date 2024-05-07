@@ -1,15 +1,14 @@
-const selectionSortRecursive = (arr, start = 0) => {
-  if (start >= arr.length - 1) {
-    return arr;
-  }
-  let minIndex = start;
-  for (let i = start + 1; i < arr.length; i++) {
-    if (arr[i] < arr[minIndex]) {
-      minIndex = i;
+const shellSort = (arr) => {
+  const n = arr.length;
+  for (let gap = Math.floor(n / 2); gap > 0; gap = Math.floor(gap / 2)) {
+    for (let i = gap; i < n; i++) {
+      const temp = arr[i];
+      let j;
+      for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+        arr[j] = arr[j - gap];
+      }
+      arr[j] = temp;
     }
   }
-  if (minIndex !== start) {
-    [arr[start], arr[minIndex]] = [arr[minIndex], arr[start]];
-  }
-  return selectionSortRecursive(arr, start + 1);
+  return arr;
 };
