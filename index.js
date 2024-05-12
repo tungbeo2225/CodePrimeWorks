@@ -1,24 +1,20 @@
-function exist(board, word) {
-  const rows = board.length;
-  const cols = board[0].length;
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-      if (dfs(board, i, j, word, 0)) return true;
+function zigzagLevelOrder(root) {
+  if (!root) return [];
+  const result = [];
+  const queue = [root];
+  let zigzag = false;
+  while (queue.length) {
+    const levelSize = queue.length;
+    const currentLevel = [];
+    for (let i = 0; i < levelSize; i++) {
+      const node = queue.shift();
+      if (zigzag) currentLevel.unshift(node.val);
+      else currentLevel.push(node.val);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
     }
+    result.push(currentLevel);
+    zigzag = !zigzag;
   }
-  return false;
-  function dfs(board, i, j, word, index) {
-    if (index === word.length) return true;
-    if (i < 0 || i >= rows || j < 0 || j >= cols || board[i][j] !== word[index])
-      return false;
-    const temp = board[i][j];
-    board[i][j] = "#";
-    const found =
-      dfs(board, i + 1, j, word, index + 1) ||
-      dfs(board, i - 1, j, word, index + 1) ||
-      dfs(board, i, j + 1, word, index + 1) ||
-      dfs(board, i, j - 1, word, index + 1);
-    board[i][j] = temp;
-    return found;
-  }
+  return result;
 }
